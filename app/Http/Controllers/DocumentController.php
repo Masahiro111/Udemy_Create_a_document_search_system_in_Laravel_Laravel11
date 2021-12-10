@@ -15,7 +15,7 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        $documents = Document::with('user')->get();
+        $documents = Document::with('user')->paginate(5);
         return view('documents.index', compact('documents'));
     }
 
