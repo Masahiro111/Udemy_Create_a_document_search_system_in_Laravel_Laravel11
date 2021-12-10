@@ -15,7 +15,8 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        return view('documents.index');
+        $documents = Document::with('user')->get();
+        return view('documents.index', compact('documents'));
     }
 
     /**
@@ -25,7 +26,7 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        //
+        return view('documents.create');
     }
 
     /**
@@ -36,7 +37,32 @@ class DocumentController extends Controller
      */
     public function store(StoreDocumentRequest $request)
     {
-        //
+        $validated = $request->validate([
+            'document' => 'required|mimes:txt'
+        ]);
+
+        $uploadedFile = $request->file('document');
+
+        $file = $uploadedFile->store('documents');
+
+        if (!$request->filename) {
+            $originalFilename = basename($uploadedFile->getClientOriginalName(), '.' . $uploadedFile->getClientOriginalExtension());
+        }
+
+        // Documentモデルのインスタンスを作成します
+        $document = new Document();
+
+        // originalFilename があったら、それをファイル名にして、なかったらアップロードでテキストボックスに指定した文字列をファイル名にします
+        $document->filename = $originalFilename ?? $request->filename;
+
+        // 保存したファイルの場所を記録します
+        $document->location = $file;
+        $document->body = "";
+        $document->user_id = auth()->user()->id;
+
+        $document->save();
+
+        return redirect(route('documents.index'));
     }
 
     /**

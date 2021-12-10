@@ -37,12 +37,14 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
+
+                                    @foreach($documents as $document )
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-500">Document name</div>
+                                            <div class="text-sm text-gray-500">{{ $document->filename }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-500">Users name</div>
+                                            <div class="text-sm text-gray-500">{{ $document->user->name }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="{{ route('documents.create') }}" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
@@ -53,7 +55,8 @@
                                             </a>
                                         </td>
                                     </tr>
-                                    <!-- More people... -->
+                                    @endforeach
+
                                 </tbody>
                             </table>
                         </div>

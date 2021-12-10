@@ -23,7 +23,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 
-Route::resource('documents', DocumentController::class)
-    ->middleware('auth');
+Route::resource('/documents', DocumentController::class);
 
 require __DIR__ . '/auth.php';
